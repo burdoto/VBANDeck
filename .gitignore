@@ -31,3 +31,7 @@ _UpgradeReport_Files/
 Thumbs.db
 Desktop.ini
 .DS_Store
+
+# Archive Building directory
+build/de.kaleidox.vbandeck.sdPlugin/
+*.streamDeckPlugin

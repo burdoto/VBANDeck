@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>netcoreapp2.2</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="CommandLineParser" Version="2.4.3" />
+      <PackageReference Include="streamdeck-client-csharp" Version="0.1.2-preview" />
+      <PackageReference Include="Vban" Version="0.1.0" />
+    </ItemGroup>
+
+</Project>
