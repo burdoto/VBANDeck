@@ -21,9 +21,8 @@ call build_exe.bat %1
 cd "../build"
 
 :copyExe
-copy "A:\Workspaces\VBAN-StreamDeck-Plugin\VBANDeck\bin\Release\netcoreapp2.2\win-x86\VBANDeck.exe" "../build/de.kaleidox.vbandeck.sdPlugin/"
-del /s /q "A:\Workspaces\VBAN-StreamDeck-Plugin\VBANDeck\bin\Release\netcoreapp2.2\ubuntu.16.10-x64"
-del /s /q "A:\Workspaces\VBAN-StreamDeck-Plugin\VBANDeck\bin\Release\netcoreapp2.2\win-x86"
+copy "..\VBANDeck\bin\Release\netcoreapp2.2\win-x86\VBANDeck.exe" ".\de.kaleidox.vbandeck.sdPlugin\"
+del /s /q "..\VBANDeck\bin\Release\netcoreapp2.2\win-x86"
 
 :craftPlugin
 DistributionTool.exe de.kaleidox.vbandeck.sdPlugin .
