@@ -1,14 +1,14 @@
 {
   "Actions": [
     {
-      "Icon": "icon_vban",
+      "Icon": "img/vban",
       "Name": "Send remote script",
       "States": [
         {
-          "Image": "icon_vban"
+          "Image": "img/vban"
         },
         {
-          "Image": "icon_vban_active"
+          "Image": "img/vban_active"
         }
       ],
       "SupportedInMultiActions": true,
@@ -21,9 +21,9 @@
   "PropertyInspectorPath": "property_inspector.html",
   "Description": "VBAN Remote Plugin for the Elgato StreamDeck",
   "Name": "VBANDeck",
-  "Icon": "icon_vban",
+  "Icon": "img/vban",
   "Category": "VBANDeck",
-  "CategoryIcon": "icon_vban_active",
+  "CategoryIcon": "img/vban_active",
   "URL": "https://github.com/burdoto/VBAN-StreamDeck-Plugin",
   "Version": "0.1.0",
   "OS": [
