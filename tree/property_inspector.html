@@ -7,8 +7,8 @@
     <meta name=apple-mobile-web-app-capable content=yes>
     <meta name=apple-mobile-web-app-status-bar-style content=black>
     <title>VBANDeck PropertyInspector</title>
-    <link rel="stylesheet" href="sdpi.css">
-    <link rel="stylesheet" href="local.css">
+    <link rel="stylesheet" href="css/sdpi.css">
+    <link rel="stylesheet" href="css/local.css">
     <script type="application/javascript" src="pi_script.js"></script>
     <script type="application/javascript">
         // Dynamic Script
@@ -36,11 +36,11 @@
         <div class="sdpi-item-label">Adjust Radio</div>
         <div class="sdpi-item-value ">
             <div class="sdpi-item-child">
-                <input id="rdio1" type="radio" value="file" name="codesource" onclick="fileInput()" onchange="object_change('codeSource')">
+                <input id="rdio1" type="radio" value="file" name="codesource" onclick="fileInput()" oninput="object_change('rdio1')">
                 <label for="rdio1" class="sdpi-item-label"><span></span>Read script from file</label>
             </div>
             <div class="sdpi-item-child">
-                <input id="rdio2" type="radio" value="script" name="codesource" onclick="sciptInput()" checked>
+                <input id="rdio2" type="radio" value="script" name="codesource" onclick="sciptInput()" oninput="object_change('rdio2')" checked>
                 <label for="rdio2" class="sdpi-item-label"><span></span>Define script</label>
             </div>
         </div>

@@ -31,8 +31,6 @@ function connectSocket(inPort, inUUID, inRegisterEvent, inInfo, inActionInfo) {
         };
         // register property inspector to Stream Deck
         websocket.send(JSON.stringify(json));
-        sendValueToPlugin('propertyInspectorConnected', 'property_inspector');
-        demoCanvas();
     };
 
     websocket.onmessage = function(evt) {
@@ -42,6 +40,26 @@ function connectSocket(inPort, inUUID, inRegisterEvent, inInfo, inActionInfo) {
     };
 }
 
-function object_change(name, id) {
+function object_change(id) {
+    var item = document.getElementById(id);
 
+    var json = {
+        address: "127.0.0.1",
+        port: "6980",
+        fromFile: false,
+        script: "bus(0).mute=1"
+    }
+
+    sendToPlugin(json)
+}
+
+function sendToPlugin(data) {
+    var json = {
+        action: actionInfo.get("action"),
+        context: actionInfo.get("context"),
+        event: "sendToPlugin",
+        payload: data
+    }
+
+    websocket.send(JSON.stringify(data))
 }
