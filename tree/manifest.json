@@ -6,19 +6,16 @@
       "States": [
         {
           "Image": "img/vban"
-        },
-        {
-          "Image": "img/vban_active"
         }
       ],
       "SupportedInMultiActions": true,
-      "Tooltip": "Send a Remote script via UDP",
-      "UUID": "de.kaleidox.vbandeck.sendscript"
+      "Tooltip": "Send a simple remote script via UDP",
+      "UUID": "de.kaleidox.vbandeck.sendscript-simple",
+      "PropertyInspectorPath": "pi/simplescript.html"
     }
   ],
   "Author": "Kaleidox",
   "CodePath": "VBANDeck.exe",
-  "PropertyInspectorPath": "property_inspector.html",
   "Description": "VBAN Remote Plugin for the Elgato StreamDeck",
   "Name": "VBANDeck",
   "Icon": "img/vban",

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name=viewport
+          content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,minimal-ui,viewport-fit=cover">
+    <meta name=apple-mobile-web-app-capable content=yes>
+    <meta name=apple-mobile-web-app-status-bar-style content=black>
+    <title>VBANDeck PropertyInspector</title>
+    <link rel="stylesheet" href="../css/sdpi.css">
+    <link rel="stylesheet" href="../css/local.css">
+    <script type="application/javascript" src="pi_script.js"></script>
+</head>
+<body>
+<div class="sdpi-wrapper">
+    <div type="field" class="sdpi-item" id="IpAddress">
+        <div class="sdpi-item-label">IP-Address</div>
+        <div class="sdpi-item-value">
+            <input id="ip-address" type="text" value="" class="sdProperty sdField" oninput="setSettings()"
+                   pattern="\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}" placeholder="127.0.0.1">
+            <label for="ip-address" class="sdpi-item-label"></label>
+        </div>
+    </div>
+    <div type="field" class="sdpi-item" id="SendingPort">
+        <div class="sdpi-item-label">Port</div>
+        <div class="sdpi-item-value">
+            <input id="port" type="text" value="" class="sdProperty sdField" oninput="setSettings()"
+                   pattern="\d{1,6}" placeholder="6980">
+            <label for="port" class="sdpi-item-label"></label>
+        </div>
+    </div>
+    <div type="field" class="sdpi-item" id="SendScript">
+        <div class="sdpi-item-label">Script</div>
+        <div class="sdpi-item-value">
+            <input id="script" type="text" value="" class="sdProperty sdField" oninput="setSettings()">
+            <label for="script" class="sdpi-item-label"></label>
+        </div>
+    </div>
+</div>
+</body>
+</html>
