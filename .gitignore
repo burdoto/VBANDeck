@@ -345,3 +345,4 @@ fabric.properties
 
 # End of https://www.gitignore.io/api/rider,aspnetcore
 build/de.kaleidox.vbandeck.streamDeckPlugin
+build/de.kaleidox.vbandeck.sdPlugin/**
