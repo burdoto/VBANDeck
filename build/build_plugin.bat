@@ -17,16 +17,16 @@ xcopy ..\tree .\de.kaleidox.vbandeck.sdPlugin\ /S /Y
 :buildExe
 echo Building executables ...
 cd "../VBANDeck"
-call build_exe.bat %1
+call build_exe.bat
 cd "../build"
 
 :copyExe
-copy "..\VBANDeck\bin\Release\netcoreapp2.2\win-x86\VBANDeck.exe" ".\de.kaleidox.vbandeck.sdPlugin\"
-del /s /q "..\VBANDeck\bin\Release\netcoreapp2.2\win-x86"
+xcopy ..\VBANDeck\bin\Release\netcoreapp2.2\win-x86\ .\de.kaleidox.vbandeck.sdPlugin\ /S /Y
+rem del /s /q "..\VBANDeck\bin\Release\netcoreapp2.2\win-x86"
 
 :craftPlugin
 DistributionTool.exe de.kaleidox.vbandeck.sdPlugin .
 
 :end
-del /s /q "de.kaleidox.vbandeck.sdPlugin"
+rem del /s /q "de.kaleidox.vbandeck.sdPlugin"
 echo Done.
