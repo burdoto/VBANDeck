@@ -2,7 +2,7 @@
   "Actions": [
     {
       "Icon": "img/vban",
-      "Name": "Send remote script",
+      "Name": "Simple Script",
       "States": [
         {
           "Image": "img/vban"
@@ -15,7 +15,7 @@
     },
     {
       "Icon": "img/vban",
-      "Name": "TwoState Macrobutton",
+      "Name": "Macrobutton",
       "States": [
         {
           "Image": "img/vban"
