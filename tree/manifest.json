@@ -33,5 +33,9 @@
     "windows": [
       "VBANDeck.exe"
     ]
+  },
+  "SDKVersion": 2,
+  "Software": {
+    "MinimumVersion": "4.2"
   }
 }
