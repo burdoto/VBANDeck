@@ -15,7 +15,7 @@
     },
     {
       "Icon": "img/vban",
-      "Name": "Macrobutton",
+      "Name": "DoubleState Button",
       "States": [
         {
           "Image": "img/vban"
@@ -25,7 +25,7 @@
         }
       ],
       "SupportedInMultiActions": true,
-      "Tooltip": "A two-state button that acts like a macrobutton",
+      "Tooltip": "A two-state button to toggle something",
       "UUID": "de.kaleidox.vbandeck.macrobutton",
       "PropertyInspectorPath": "pi/macrobutton.html"
     }
