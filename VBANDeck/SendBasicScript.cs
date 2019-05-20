@@ -32,8 +32,8 @@ namespace VBANDeck
             public string Script { get; set; }
         }
 
-        private readonly PluginSettings settings;
-        private readonly VBANStream<string> vbanStream;
+        private PluginSettings settings;
+        private VBANStream<string> vbanStream;
 
         public SendBasicScript(SDConnection connection, InitialPayload payload) : base(connection, payload)
         {
