@@ -52,7 +52,7 @@ namespace VBANDeck
 
         public override void KeyPressed(KeyPayload payload)
         {
-            Logger.Instance.LogMessage(TracingLevel.INFO, "Sending simple script");
+            Logger.Instance.LogMessage(TracingLevel.INFO, "Sending simple script: "+settings.Script);
 
             vbanStream.SendData(settings.Script);
         }
@@ -63,6 +63,7 @@ namespace VBANDeck
 
         public override void ReceivedSettings(ReceivedSettingsPayload payload)
         {
+            Logger.Instance.LogMessage(TracingLevel.INFO, "ReceivedSettings: "+payload.Settings);
             Tools.AutoPopulateSettings(settings, payload.Settings);
         }
 
