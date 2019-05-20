@@ -10,7 +10,7 @@
       ],
       "SupportedInMultiActions": true,
       "Tooltip": "Send a simple remote script via UDP",
-      "UUID": "de.kaleidox.vbandeck.sendscript-simple",
+      "UUID": "de.kaleidox.vbandeck.sendscript",
       "PropertyInspectorPath": "pi/simplescript.html"
     }
   ],

@@ -1,23 +1,24 @@
+using System;
 using BarRaider.SdTools;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Net;
 using Vban;
 
+#pragma warning disable 4014
 namespace VBANDeck
 {
-    [PluginActionId("de.kaleidox.vbandeck.sendscript-simple")]
-    public class SendBasicScript : PluginBase
+    [PluginActionId("de.kaleidox.vbandeck.sendscript")]
+    public class SendScript : PluginBase
     {
         private class PluginSettings
         {
             public static PluginSettings CreateDefaultSettings()
             {
-                PluginSettings instance = new PluginSettings();
-
-                instance.IpAddress = "127.0.0.1";
-                instance.Port = VBAN.DefaultPort;
-                instance.Script = "";
+                var instance = new PluginSettings
+                {
+                    IpAddress = "127.0.0.1", Port = VBAN.DefaultPort, Script = ""
+                };
 
                 return instance;
             }
@@ -32,29 +33,57 @@ namespace VBANDeck
             public string Script { get; set; }
         }
 
-        private PluginSettings settings;
-        private VBANStream<string> vbanStream;
+        private readonly PluginSettings _settings;
+        private VBANStream<string> _vbanStream;
 
-        public SendBasicScript(SDConnection connection, InitialPayload payload) : base(connection, payload)
+        public SendScript(SDConnection connection, InitialPayload payload) : base(connection, payload)
         {
             if (payload.Settings == null || payload.Settings.Count == 0)
             {
-                settings = PluginSettings.CreateDefaultSettings();
-                Connection.SetSettingsAsync(JObject.FromObject(settings));
+                _settings = PluginSettings.CreateDefaultSettings();
+                Connection.SetSettingsAsync(JObject.FromObject(_settings));
             }
             else
             {
-                settings = payload.Settings.ToObject<PluginSettings>();
+                _settings = payload.Settings.ToObject<PluginSettings>();
             }
 
-            vbanStream = VBAN.OpenTextStream(IPAddress.Parse(settings.IpAddress), settings.Port);
+            try
+            {
+                var ipAddress = IPAddress.Parse(_settings.IpAddress);
+                _vbanStream.Close();
+                _vbanStream = VBAN.OpenTextStream(ipAddress, _settings.Port);
+            }
+            catch (FormatException e)
+            {
+                Logger.Instance.LogMessage(TracingLevel.WARN, "IP-Address ["+_settings.IpAddress+"] is unparseable! ("+e.Message+")");
+            }
         }
 
         public override void KeyPressed(KeyPayload payload)
         {
-            Logger.Instance.LogMessage(TracingLevel.INFO, "Sending simple script: "+settings.Script);
+            if (string.IsNullOrEmpty(_settings.Script))
+            {
+                Connection.ShowAlert();
+                Logger.Instance.LogMessage(TracingLevel.ERROR, "Cannot send empty string!");
+            }
+            else if (_vbanStream == null)
+            {
+                Connection.ShowAlert();
+                Logger.Instance.LogMessage(TracingLevel.ERROR, "VBANStream is null! Is your IP-Address parseable? ["+_settings.IpAddress+"]");
+            }
+            else
+            {
+                Logger.Instance.LogMessage(TracingLevel.DEBUG, "Sending simple script!");
 
-            vbanStream.SendData(settings.Script);
+                foreach (var line in _settings.Script.Split("\n"))
+                {
+                    _vbanStream.SendData(line);
+                    Logger.Instance.LogMessage(TracingLevel.DEBUG, "Sent script line: "+line);
+                }
+
+                Logger.Instance.LogMessage(TracingLevel.DEBUG, "Script sent!");
+            }
         }
 
         public override void KeyReleased(KeyPayload payload)
@@ -63,8 +92,18 @@ namespace VBANDeck
 
         public override void ReceivedSettings(ReceivedSettingsPayload payload)
         {
-            Logger.Instance.LogMessage(TracingLevel.INFO, "ReceivedSettings: "+payload.Settings);
-            Tools.AutoPopulateSettings(settings, payload.Settings);
+            Tools.AutoPopulateSettings(_settings, payload.Settings);
+
+            try
+            {
+                var ipAddress = IPAddress.Parse(_settings.IpAddress);
+                _vbanStream.Close();
+                _vbanStream = VBAN.OpenTextStream(ipAddress, _settings.Port);
+            }
+            catch (FormatException e)
+            {
+                Logger.Instance.LogMessage(TracingLevel.WARN, "IP-Address ["+_settings.IpAddress+"] is unparseable! ("+e.Message+")");
+            }
         }
 
         public override void ReceivedGlobalSettings(ReceivedGlobalSettingsPayload payload)
