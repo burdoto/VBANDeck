@@ -17,14 +17,14 @@
         <div class="sdpi-item-label">IP-Address</div>
         <div class="sdpi-item-value">
             <input id="ip-address" type="text" value="" class="sdProperty sdField" oninput="setSettings()"
-                   pattern="\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}" placeholder="127.0.0.1">
+                   pattern="\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}" placeholder="127.0.0.1" alt="Local Area Network only!">
         </div>
     </div>
     <div type="field" class="sdpi-item" id="SendingPort">
         <div class="sdpi-item-label">Port</div>
         <div class="sdpi-item-value">
             <input id="port" type="text" value="" class="sdProperty sdField" oninput="setSettings()"
-                   pattern="\d{1,6}" placeholder="6980" inputmode="numeric">
+                   pattern="\d{1,6}" placeholder="6980">
         </div>
     </div>
     <div type="textarea" class="sdpi-item" id="OnScript">
@@ -37,6 +37,12 @@
         <div class="sdpi-item-label">Request for Trigger OUT</div>
         <div class="sdpi-item-value">
             <textarea id="script-off" type="textarea" class="sdProperty sdField" oninput="setSettings()"></textarea>
+        </div>
+    </div>
+    <div type="textarea" class="sdpi-item" id="InitScript">
+        <div class="sdpi-item-label">Request for initial state</div>
+        <div class="sdpi-item-value">
+            <textarea id="initial-script" type="textarea" class="sdProperty sdField" oninput="setSettings()"></textarea>
         </div>
     </div>
 </div>
