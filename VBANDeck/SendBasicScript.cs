@@ -141,17 +141,18 @@ namespace VBANDeck
                         return;
                     }
 
-                    if (Regex.IsMatch(value, "[0-9]{1,6}"))
+                    int port;
+                    if (Regex.IsMatch(value, "[0-9]{1,5}") 
+                        && (port = int.Parse(value)) <= 65535)
                     {
-                        Port = int.Parse(value);
+                        Port = port;
+                        return;
                     }
-                    else
-                    {
-                        Logger.Instance.LogMessage(TracingLevel.WARN,
-                            "Invalid Port [" + value + "] was entered! Falling back to " +
-                            VBAN.DefaultPort);
-                        Port = VBAN.DefaultPort;
-                    }
+                    
+                    Logger.Instance.LogMessage(TracingLevel.WARN,
+                        "Invalid Port [" + value + "] was entered! Falling back to " +
+                        VBAN.DefaultPort);
+                    Port = VBAN.DefaultPort;
                 }
             }
 
