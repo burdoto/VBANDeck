@@ -6,6 +6,8 @@ using BarRaider.SdTools;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Vban;
+using Vban.Constants;
+using Vban.Packet;
 
 #pragma warning disable 4014
 namespace VBANDeck
@@ -13,7 +15,7 @@ namespace VBANDeck
     [PluginActionId("de.kaleidox.vbandeck.macrobutton")]
     public class MacroButton : PluginBase
     {
-        private readonly PluginSettings _settings;
+        private PluginSettings _settings;
         private bool _isOn;
         private VBANStream<string> _vbanStream;
 
@@ -81,8 +83,32 @@ namespace VBANDeck
         {
             Tools.AutoPopulateSettings(_settings, payload.Settings);
 
+            MakeVban();
+        }
+
+
+        private void MakeVban()
+        {
             _vbanStream?.Close();
-            _vbanStream = VBAN.OpenTextStream(_settings.IpAddress, _settings.Port);
+            _vbanStream?.Dispose();
+            _vbanStream = null;
+
+            var headFactoryBuilder = new VbanPacketHead.Factory.Builder();
+            headFactoryBuilder.Protocol = Protocol.Text;
+            headFactoryBuilder.SampleRate = SampleRate.Hz176400;
+            headFactoryBuilder.Channel = 0;
+            headFactoryBuilder.Samples = 0;
+            headFactoryBuilder.Format = Format.Int16;
+            headFactoryBuilder.Codec = Codec.Pcm;
+            headFactoryBuilder.StreamName = _settings.StreamName;
+            var headFactory = headFactoryBuilder.Build();
+
+            var bodyFactoryBuilder = new VbanPacket.Factory.Builder();
+            bodyFactoryBuilder.HeadFactory = headFactory;
+            var bodyFactory = bodyFactoryBuilder.Build();
+
+            _vbanStream =
+                new VBANStream<string>(bodyFactory, _settings.IpAddress, _settings.Port);
         }
 
         public override void ReceivedGlobalSettings(ReceivedGlobalSettingsPayload payload)
@@ -99,6 +125,7 @@ namespace VBANDeck
 
         private class PluginSettings
         {
+            private string _streamName;
             internal IPAddress IpAddress;
             internal int Port;
 
@@ -107,30 +134,20 @@ namespace VBANDeck
             {
                 set
                 {
-                    if (string.IsNullOrEmpty(value))
-                    {
-                        IpAddress = IPAddress.Loopback;
-                        return;
-                    }
+                    if (Regex.IsMatch(value, "\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}"))
+                        try
+                        {
+                            IpAddress = IPAddress.Parse(value);
+                            return;
+                        }
+                        catch (Exception)
+                        {
+                            // ignored
+                        }
 
-                    try
-                    {
-                        IpAddress = IPAddress.Parse(value);
-                    }
-                    catch (FormatException)
-                    {
-                        Logger.Instance.LogMessage(TracingLevel.WARN,
-                            "Unparseable IP address [" + value +
-                            "] was entered! Falling back to IPAddress.Loopback");
-                        IpAddress = IPAddress.Loopback;
-                    }
-                    catch (Exception e)
-                    {
-                        Logger.Instance.LogMessage(TracingLevel.ERROR,
-                            "Unexpected exception occurred in IpAddress setter: " + e.Message +
-                            "\n Falling back to IPAddress.Loopback");
-                        IpAddress = IPAddress.Loopback;
-                    }
+                    Logger.Instance.LogMessage(TracingLevel.ERROR,
+                        $"Invalid IP Address [{value}] was entered! Falling back to [{IPAddress.Loopback}]");
+                    IpAddress = IPAddress.Loopback;
                 }
             }
 
@@ -139,23 +156,17 @@ namespace VBANDeck
             {
                 set
                 {
-                    if (string.IsNullOrEmpty(value))
+                    int port;
+                    if (Regex.IsMatch(value, "[0-9]{1,5}")
+                        && (port = int.Parse(value)) <= 65535)
                     {
-                        Port = VBAN.DefaultPort;
+                        Port = port;
                         return;
                     }
 
-                    if (Regex.IsMatch(value, "[0-9]{1,6}"))
-                    {
-                        Port = int.Parse(value);
-                    }
-                    else
-                    {
-                        Logger.Instance.LogMessage(TracingLevel.WARN,
-                            "Invalid Port [" + value + "] was entered! Falling back to " +
-                            VBAN.DefaultPort);
-                        Port = VBAN.DefaultPort;
-                    }
+                    Logger.Instance.LogMessage(TracingLevel.WARN,
+                        $"Invalid Port [{value}] was entered! Falling back to [{VBAN.DefaultPort.ToString()}]");
+                    Port = VBAN.DefaultPort;
                 }
             }
 
@@ -165,11 +176,33 @@ namespace VBANDeck
             [JsonProperty(PropertyName = "script-off")]
             public string OffScript { get; set; }
 
+            [JsonProperty(PropertyName = "streamName")]
+            public string StreamName
+            {
+                set
+                {
+                    if (!string.IsNullOrEmpty(value))
+                    {
+                        _streamName = value;
+                        return;
+                    }
+
+                    Logger.Instance.LogMessage(TracingLevel.WARN,
+                        $"Invalid Stream Name [{value}] was entered! Falling back to [Command1]");
+                    _streamName = "Command1";
+                }
+
+                get => _streamName;
+            }
+
             public static PluginSettings CreateDefaultSettings()
             {
                 var instance = new PluginSettings
                 {
-                    IpAddressProperty = null, Port = 0, OnScript = "",
+                    IpAddressProperty = null,
+                    Port = 0,
+                    StreamName = "Command1",
+                    OnScript = "",
                     OffScript = ""
                 };
 
