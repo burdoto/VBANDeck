@@ -135,12 +135,6 @@ namespace VBANDeck
             {
                 set
                 {
-                    if (string.IsNullOrEmpty(value))
-                    {
-                        Port = VBAN.DefaultPort;
-                        return;
-                    }
-
                     int port;
                     if (Regex.IsMatch(value, "[0-9]{1,5}") 
                         && (port = int.Parse(value)) <= 65535)
@@ -150,8 +144,7 @@ namespace VBANDeck
                     }
                     
                     Logger.Instance.LogMessage(TracingLevel.WARN,
-                        "Invalid Port [" + value + "] was entered! Falling back to " +
-                        VBAN.DefaultPort);
+                        $"Invalid Port [{value}] was entered! Falling back to {VBAN.DefaultPort.ToString()}");
                     Port = VBAN.DefaultPort;
                 }
             }
