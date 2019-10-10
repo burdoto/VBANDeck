@@ -6,8 +6,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="StreamDeck-Tools" Version="2.2.0" />
-      <PackageReference Include="Vban" Version="0.1.0" />
+      <PackageReference Include="StreamDeck-Tools" Version="2.6.0" />
+      <PackageReference Include="Vban" Version="0.1.1" />
     </ItemGroup>
 
     <ItemGroup>
