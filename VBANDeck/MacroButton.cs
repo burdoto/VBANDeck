@@ -22,6 +22,8 @@ namespace VBANDeck
         public MacroButton(SDConnection connection, InitialPayload payload) : base(connection,
             payload)
         {
+            Logger.Instance.LogMessage(TracingLevel.INFO, "Initializing MacroButton action");
+            
             try
             {
                 _isOn = payload.State == 1;

@@ -21,6 +21,8 @@ namespace VBANDeck
         public SendScript(SDConnection connection, InitialPayload payload) : base(connection,
             payload)
         {
+            Logger.Instance.LogMessage(TracingLevel.INFO, "Initializing BasicScript action");
+            
             try
             {
                 if (payload.Settings == null || payload.Settings.Count == 0)
