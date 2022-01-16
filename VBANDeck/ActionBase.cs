@@ -20,26 +20,24 @@ namespace VBANDeck
 
         protected void MakeVban()
         {
+            Logger.Instance.LogMessage(TracingLevel.DEBUG, "Creating new VBANOutputStream; old = " + _vbanStream);
+            
             _vbanStream?.Close();
             _vbanStream?.Dispose();
-            _vbanStream = null;
 
-            var headFactoryBuilder
-                = VBANPacketHead<string>.Factory<string, IEnumerable<char>>.CreateBuilder(VBAN.Protocol<string>.Text);
-            headFactoryBuilder.SampleRate = VBAN.BitsPerSecond.Bps256000;
-            headFactoryBuilder.Channel = 0;
-            headFactoryBuilder.Samples = 0;
-            headFactoryBuilder.Format = VBAN.CommandFormat.Ascii;
-            headFactoryBuilder.Codec = VBAN.Codec.PCM;
-            headFactoryBuilder.StreamName = _streamName;
-            var headFactory = headFactoryBuilder.Build();
-
-            var bodyFactoryBuilder
-                = VBANPacket<string>.Factory<string, IEnumerable<char>>.CreateBuilder(VBAN.Protocol<string>.Text);
-            bodyFactoryBuilder.HeadFactory = headFactory;
-            var bodyFactory = bodyFactoryBuilder.Build();
-
-            _vbanStream = new VBANOutputStream<string>(bodyFactory, _ipAddress, _port);
+            _vbanStream = new VBANOutputStream<string>(
+                new VBANPacket<string>.Factory<string, IEnumerable<char>>.Builder<string, IEnumerable<char>>(VBAN.Protocol<string>.Text)
+                {
+                    HeadFactory = new VBANPacketHead<string>.Factory<string, IEnumerable<char>>.Builder<string, IEnumerable<char>>(VBAN.Protocol<string>.Text)
+                    {
+                        SampleRate = VBAN.BitsPerSecond.Bps256000,
+                        Channel = 0,
+                        Samples = 0,
+                        Format = VBAN.CommandFormat.Ascii,
+                        Codec = VBAN.Codec.PCM,
+                        StreamName = _streamName
+                    }.Build()
+                }.Build(), _ipAddress, _port);
         }
     }
 }

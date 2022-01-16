@@ -35,8 +35,8 @@ namespace VBANDeck
                 if (_settings == null)
                 {
                     Logger.Instance.LogMessage(TracingLevel.ERROR,
-                        "Settings for MacroButton action could not be initialized");
-                    throw new ApplicationException("Settings for MacroButton action could not be initialized");
+                        "Settings for SendScript action could not be initialized");
+                    throw new ApplicationException("Settings for SendScript action could not be initialized");
                 }
 
                 if (_vbanStream == null)
@@ -44,8 +44,7 @@ namespace VBANDeck
             }
             catch (Exception e)
             {
-                Logger.Instance.LogMessage(TracingLevel.FATAL,
-                    $"Exception occurred in SendScript constructor: {e.Message}");
+                Program.LogException(e, "SendScript constructor");
             }
         }
 

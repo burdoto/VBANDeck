@@ -46,11 +46,9 @@ namespace VBANDeck
             }
             catch (Exception e)
             {
-                Logger.Instance.LogMessage(TracingLevel.FATAL,
-                    "Exception occurred in MacroButton constructor: " + e.Message);
+                Program.LogException(e, "MacroButton constructor");
             }
         }
-
 
         protected override string _streamName => _settings.StreamName;
         protected override IPAddress _ipAddress => _settings.IpAddress;
