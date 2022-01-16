@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VBANDeck", "VBANDeck\VBANDeck.csproj", "{D0114A26-8826-4D34-95AE-B56A3D06DAF2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vban", "..\VBAN-API-CS\Vban\Vban.csproj", "{3115D455-A1C3-4134-A24E-FED39F7B31F0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{D0114A26-8826-4D34-95AE-B56A3D06DAF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D0114A26-8826-4D34-95AE-B56A3D06DAF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D0114A26-8826-4D34-95AE-B56A3D06DAF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3115D455-A1C3-4134-A24E-FED39F7B31F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3115D455-A1C3-4134-A24E-FED39F7B31F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3115D455-A1C3-4134-A24E-FED39F7B31F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3115D455-A1C3-4134-A24E-FED39F7B31F0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

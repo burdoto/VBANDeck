@@ -6,23 +6,20 @@ using BarRaider.SdTools;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Vban;
-using Vban.Constants;
-using Vban.Packet;
 
 #pragma warning disable 4014
 namespace VBANDeck
 {
     [PluginActionId("de.kaleidox.vbandeck.sendscript")]
-    public class SendScript : PluginBase
+    public class SendScript : ActionBase
     {
-        private PluginSettings _settings;
-        private VBANStream<string> _vbanStream;
+        private readonly PluginSettings _settings;
 
         public SendScript(SDConnection connection, InitialPayload payload) : base(connection,
             payload)
         {
             Logger.Instance.LogMessage(TracingLevel.INFO, "Initializing BasicScript action");
-            
+
             try
             {
                 if (payload.Settings == null || payload.Settings.Count == 0)
@@ -35,7 +32,15 @@ namespace VBANDeck
                     _settings = payload.Settings.ToObject<PluginSettings>();
                 }
 
-                if (_vbanStream == null) MakeVban();
+                if (_settings == null)
+                {
+                    Logger.Instance.LogMessage(TracingLevel.ERROR,
+                        "Settings for MacroButton action could not be initialized");
+                    throw new ApplicationException("Settings for MacroButton action could not be initialized");
+                }
+
+                if (_vbanStream == null)
+                    MakeVban();
             }
             catch (Exception e)
             {
@@ -44,28 +49,9 @@ namespace VBANDeck
             }
         }
 
-        private void MakeVban()
-        {
-            _vbanStream?.Close();
-            _vbanStream?.Dispose();
-            _vbanStream = null;
-
-            var headFactoryBuilder = new VbanPacketHead.Factory.Builder();
-            headFactoryBuilder.Protocol = Protocol.Text;
-            headFactoryBuilder.SampleRate = SampleRate.Hz176400;
-            headFactoryBuilder.Channel = 0;
-            headFactoryBuilder.Samples = 0;
-            headFactoryBuilder.Format = Format.Int16;
-            headFactoryBuilder.Codec = Codec.Pcm;
-            headFactoryBuilder.StreamName = _settings.StreamName;
-            var headFactory = headFactoryBuilder.Build();
-
-            var bodyFactoryBuilder = new VbanPacket.Factory.Builder();
-            bodyFactoryBuilder.HeadFactory = headFactory;
-            var bodyFactory = bodyFactoryBuilder.Build();
-
-            _vbanStream = new VBANStream<string>(bodyFactory, _settings.IpAddress, _settings.Port);
-        }
+        protected override string _streamName => _settings.StreamName;
+        protected override IPAddress _ipAddress => _settings.IpAddress;
+        protected override int _port => _settings.Port;
 
         public override void KeyPressed(KeyPayload payload)
         {
@@ -85,7 +71,7 @@ namespace VBANDeck
             {
                 Logger.Instance.LogMessage(TracingLevel.DEBUG, "Sending simple script!");
 
-                foreach (var line in _settings.Script.Split("\n"))
+                foreach (string line in _settings.Script.Split("\n"))
                 {
                     _vbanStream.SendData(line);
                     Logger.Instance.LogMessage(TracingLevel.DEBUG, "Sent script line: " + line);
@@ -121,10 +107,9 @@ namespace VBANDeck
 
         private class PluginSettings
         {
+            private string _streamName;
             internal IPAddress IpAddress;
             internal int Port;
-            
-            private string _streamName;
 
             [JsonProperty(PropertyName = "ip-address")]
             public string IpAddressProperty
@@ -132,7 +117,6 @@ namespace VBANDeck
                 set
                 {
                     if (Regex.IsMatch(value, "\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}"))
-                    {
                         try
                         {
                             IpAddress = IPAddress.Parse(value);
@@ -142,9 +126,8 @@ namespace VBANDeck
                         {
                             // ignored
                         }
-                    }
-                    
-                    Logger.Instance.LogMessage(TracingLevel.ERROR, 
+
+                    Logger.Instance.LogMessage(TracingLevel.ERROR,
                         $"Invalid IP Address [{value}] was entered! Falling back to [{IPAddress.Loopback}]");
                     IpAddress = IPAddress.Loopback;
                 }
@@ -156,13 +139,13 @@ namespace VBANDeck
                 set
                 {
                     int port;
-                    if (Regex.IsMatch(value, "[0-9]{1,5}") 
+                    if (Regex.IsMatch(value, "[0-9]{1,5}")
                         && (port = int.Parse(value)) <= 65535)
                     {
                         Port = port;
                         return;
                     }
-                    
+
                     Logger.Instance.LogMessage(TracingLevel.WARN,
                         $"Invalid Port [{value}] was entered! Falling back to [{VBAN.DefaultPort.ToString()}]");
                     Port = VBAN.DefaultPort;
@@ -173,7 +156,8 @@ namespace VBANDeck
             public string Script { get; set; }
 
             [JsonProperty(PropertyName = "streamName")]
-            public string StreamName {
+            public string StreamName
+            {
                 set
                 {
                     if (!string.IsNullOrEmpty(value))
@@ -181,12 +165,12 @@ namespace VBANDeck
                         _streamName = value;
                         return;
                     }
-                    
+
                     Logger.Instance.LogMessage(TracingLevel.WARN,
                         $"Invalid Stream Name [{value}] was entered! Falling back to [Command1]");
                     _streamName = "Command1";
                 }
-                
+
                 get => _streamName;
             }
 

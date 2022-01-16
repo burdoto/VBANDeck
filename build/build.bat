@@ -21,8 +21,8 @@ call build_exe.bat
 cd "../build"
 
 :copyExe
-xcopy ..\VBANDeck\bin\Release\netcoreapp2.2\win-x86 .\de.kaleidox.vbandeck.sdPlugin\ /S /Y
-del /s /q "..\VBANDeck\bin\Release\netcoreapp2.2\win-x86"
+xcopy ..\VBANDeck\bin\Release\net5.0\win-x86 .\de.kaleidox.vbandeck.sdPlugin\ /S /Y
+del /s /q "..\VBANDeck\bin\Release\net5.0\win-x86"
 
 :craftPlugin
 DistributionTool.exe de.kaleidox.vbandeck.sdPlugin .
