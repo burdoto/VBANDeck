@@ -38,7 +38,7 @@
   "Category": "VBANDeck",
   "CategoryIcon": "img/vban_active",
   "URL": "https://github.com/burdoto/VBAN-StreamDeck-Plugin",
-  "Version": "1.0.1",
+  "Version": "1.0.2",
   "OS": [
     {
       "Platform": "windows",
