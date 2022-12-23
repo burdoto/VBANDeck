@@ -110,7 +110,7 @@ namespace VBANDeck
 
         private class PluginSettings
         {
-            private string _streamName;
+            private string _streamName = "Command1";
             internal IPAddress IpAddress;
             internal int Port;
 
