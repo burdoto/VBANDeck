@@ -10,7 +10,7 @@
 
     <ItemGroup>
         <PackageReference Include="StreamDeck-Tools" Version="3.2.0" />
-        <PackageReference Include="Vban" Version="0.1.1" />
+        <PackageReference Include="Vban" Version="0.2.0" />
         <PackageReference Update="Microsoft.NETCore.App" Version="2.2.8" />
     </ItemGroup>
 
