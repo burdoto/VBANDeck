@@ -54,6 +54,8 @@ namespace VBANDeck
 
         public override void KeyPressed(KeyPayload payload)
         {
+            if (_vbanStream == null)
+                MakeVban();
             if (string.IsNullOrEmpty(_settings.Script))
             {
                 Connection.ShowAlert();
